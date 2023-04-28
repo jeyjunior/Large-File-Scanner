@@ -1,5 +1,7 @@
 using Large_File_Scanner.Helpers;
 using Large_File_Scanner.Setup;
+using System.Diagnostics;
+using System.Globalization;
 using System.Security.Principal;
 
 namespace Large_File_Scanner
@@ -25,8 +27,7 @@ namespace Large_File_Scanner
 
         private async void btn_GerarArquivo_Click(object sender, EventArgs e)
         {
-            InitialSetup.Instance.MegaBytes = double.Parse(txbTotalMB.Text);
-            await CreateFile.Instance.VerificarArquivosAsync();
+            await CreateFile.Instance.CriarArquivosAsync();
         }
 
         private void txbTotalMB_KeyPress(object sender, KeyPressEventArgs e)
@@ -36,8 +37,19 @@ namespace Large_File_Scanner
 
         private async void btn_ListarArquivos_Click(object sender, EventArgs e)
         {
-            CreateFile.Instance.CheckedListBox = checkedListBox;
-            await CreateFile.Instance.VerificarArquivosAsync();
+            double valor = 0;
+
+            if (String.IsNullOrEmpty(txbTotalMB.Text))
+                return;
+
+
+            if (double.TryParse(txbTotalMB.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out valor))
+            {
+                InitialSetup.Instance.MegaBytes = valor;
+                CreateFile.Instance.CheckedListBox = checkedListBox;
+                await CreateFile.Instance.VerificarArquivosAsync();
+            }
+
         }
     }
 }

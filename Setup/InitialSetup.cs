@@ -60,7 +60,7 @@ namespace Large_File_Scanner.Setup
             get => megabytes;
             set
             {
-                megabytes = value * 1024 * 1024;
+                megabytes = value;
             }
         }
 

@@ -66,6 +66,7 @@
             // txbTotalMB
             // 
             txbTotalMB.Location = new Point(22, 65);
+            txbTotalMB.MaxLength = 12;
             txbTotalMB.Name = "txbTotalMB";
             txbTotalMB.Size = new Size(160, 23);
             txbTotalMB.TabIndex = 4;
