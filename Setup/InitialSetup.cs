@@ -6,44 +6,76 @@ using System.Threading.Tasks;
 
 namespace Large_File_Scanner.Setup
 {
-    public class InitialSetup
+    public sealed class InitialSetup
     {
-        private string path = "";
-        private float megabytes = 0;
-        public float MegaBytes
+        private static InitialSetup instance = new InitialSetup();
+        private static readonly object padlock = new object();
+        public static InitialSetup Instance
         {
-            get { return megabytes; }
-            set { megabytes = value; }
-        }
-        private string fileName = "Lista de arquivos ";
-
-        public InitialSetup()
-        {
-
-        }
-
-        public string FindPath()
-        {
-            var fdb = new FolderBrowserDialog();
-
-            if (fdb.ShowDialog() == DialogResult.OK)
+            get
             {
-                path = fdb.SelectedPath;
-                fileName = $"{path}\\{fileName}.txt";
-            }
-
-            return path;
-        }
-
-
-        public void GerarArquivo(float mb)
-        {
-            megabytes = mb;
-
-            using (StreamWriter file = new StreamWriter(fileName))
-            {
-                file.WriteLine($"Arquivos com tamanho maior ou igual que {megabytes}mb");
+                lock (padlock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new InitialSetup();
+                    }
+                    return instance;
+                }
             }
         }
+
+        private InitialSetup()
+        {
+
+        }
+
+        private bool isPathValid = false;
+        public bool IsPathValid => isPathValid;
+
+        private string myPath = "";
+        public string MyPath
+        {
+            get => myPath;
+            set 
+            {
+                if(value !=  null)
+                {
+                    myPath = value;
+                    FileName = $"{myPath}\\{fileName}.txt";
+                    Gitattributes = $"{myPath}\\gitattributes.txt";
+                    isPathValid = true;
+                }
+                else
+                {
+                    isPathValid = false;
+                }
+            }
+        }
+
+
+        private double megabytes = 0;
+        public double MegaBytes 
+        { 
+            get => megabytes;
+            set
+            {
+                megabytes = value * 1024 * 1024;
+            }
+        }
+
+        private string fileName = "Lista de arquivos";
+        public string FileName { get => fileName; private set => fileName = value; }
+
+        
+        private string gitattributes = "";
+        public string Gitattributes { get => gitattributes; private set => gitattributes = value; }
+
+
+        private readonly string gitattributesFormat = "filter=lfs diff=lfs merge=lfs -text";
+        public string GitattributesFormat => gitattributesFormat;
+
+
+
     }
 }

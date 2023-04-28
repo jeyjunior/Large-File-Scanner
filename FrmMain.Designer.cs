@@ -33,6 +33,8 @@
             lbl_TotalMBs = new Label();
             txbTotalMB = new TextBox();
             btn_GerarArquivo = new Button();
+            checkedListBox = new CheckedListBox();
+            btn_ListarArquivos = new Button();
             SuspendLayout();
             // 
             // tbxPastaDestino
@@ -55,7 +57,7 @@
             // lbl_TotalMBs
             // 
             lbl_TotalMBs.AutoSize = true;
-            lbl_TotalMBs.Location = new Point(22, 132);
+            lbl_TotalMBs.Location = new Point(197, 73);
             lbl_TotalMBs.Name = "lbl_TotalMBs";
             lbl_TotalMBs.Size = new Size(38, 15);
             lbl_TotalMBs.TabIndex = 3;
@@ -79,11 +81,31 @@
             btn_GerarArquivo.UseVisualStyleBackColor = true;
             btn_GerarArquivo.Click += btn_GerarArquivo_Click;
             // 
+            // checkedListBox
+            // 
+            checkedListBox.FormattingEnabled = true;
+            checkedListBox.Location = new Point(22, 107);
+            checkedListBox.Name = "checkedListBox";
+            checkedListBox.Size = new Size(389, 274);
+            checkedListBox.TabIndex = 6;
+            // 
+            // btn_ListarArquivos
+            // 
+            btn_ListarArquivos.Location = new Point(336, 78);
+            btn_ListarArquivos.Name = "btn_ListarArquivos";
+            btn_ListarArquivos.Size = new Size(75, 23);
+            btn_ListarArquivos.TabIndex = 7;
+            btn_ListarArquivos.Text = "Listar";
+            btn_ListarArquivos.UseVisualStyleBackColor = true;
+            btn_ListarArquivos.Click += btn_ListarArquivos_Click;
+            // 
             // FrmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(441, 450);
+            Controls.Add(btn_ListarArquivos);
+            Controls.Add(checkedListBox);
             Controls.Add(btn_GerarArquivo);
             Controls.Add(txbTotalMB);
             Controls.Add(lbl_TotalMBs);
@@ -101,5 +123,7 @@
         private Label lbl_TotalMBs;
         private TextBox txbTotalMB;
         private Button btn_GerarArquivo;
+        private CheckedListBox checkedListBox;
+        private Button btn_ListarArquivos;
     }
 }
