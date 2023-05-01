@@ -27,7 +27,7 @@ namespace Large_File_Scanner
 
         private async void btn_GerarArquivo_Click(object sender, EventArgs e)
         {
-            await CreateFile.Instance.CriarArquivosAsync();
+            await FileCreator.Instance.CriarArquivosAsync(checkedListBox);
         }
 
         private void txbTotalMB_KeyPress(object sender, KeyPressEventArgs e)
@@ -46,8 +46,7 @@ namespace Large_File_Scanner
             if (double.TryParse(txbTotalMB.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out valor))
             {
                 InitialSetup.Instance.MegaBytes = valor;
-                CreateFile.Instance.CheckedListBox = checkedListBox;
-                await CreateFile.Instance.VerificarArquivosAsync();
+                await FileChecker.Instance.VerificarArquivosAsync(checkedListBox);
             }
 
         }
