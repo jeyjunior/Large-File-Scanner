@@ -1,3 +1,4 @@
+using Large_File_Scanner.Components;
 using Large_File_Scanner.Helpers;
 using Large_File_Scanner.Setup;
 using System.Diagnostics;
@@ -24,9 +25,9 @@ namespace Large_File_Scanner
             }
         }
 
-        private async void btn_GerarArquivo_Click(object sender, EventArgs e)
+        private void btn_GerarArquivo_Click(object sender, EventArgs e)
         {
-            await FileCreator.Instance.CriarArquivosAsync(checkedListBox);
+            FileCreator.Instance.CriarArquivosAsync(checkedListBox);
         }
 
         private void txbTotalMB_KeyPress(object sender, KeyPressEventArgs e)
@@ -36,45 +37,34 @@ namespace Large_File_Scanner
 
         private async void btn_ListarArquivos_Click(object sender, EventArgs e)
         {
-            double valor = 0;
-            var myPath = InitialSetup.Instance.MyPath;
-
-            if (String.IsNullOrEmpty(txbTotalMB.Text) || String.IsNullOrEmpty(myPath))
+            if (ValidateInputs.InputValues(txbTotalMB.Text))
             {
-                MessageBox.Show("Opera��o inv�lida!");
-                return;
-
-
-            if (double.TryParse(txbTotalMB.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out valor))
-            {
-                InitialSetup.Instance.MegaBytes = valor;
-                await FileChecker.Instance.VerificarArquivosAsync(checkedListBox);
+                var directoryPath = InitialSetup.Instance.MyPath;
+                await Task.Run(async () =>
+                {
+                    await FileChecker.Instance.VerificarArquivosAsync(checkedListBox, directoryPath, InitialSetup.Instance.MegaBytes);
+                });
             }
         }
 
         private void btn_Check_Click(object sender, EventArgs e)
         {
-            SetCheckedListBoxValues(true);
+            MainCheckedListBox.Instance.CheckOrUncheck(false);
         }
 
         private void btn_Uncheck_Click(object sender, EventArgs e)
         {
-            SetCheckedListBoxValues(false);
+            MainCheckedListBox.Instance.CheckOrUncheck(false);
         }
 
-        private void SetCheckedListBoxValues(bool value)
+
+
+        private void FrmMain_Load(object sender, EventArgs e)
         {
-            if (checkedListBox.Items.Count > 0)
-            {
-                for (int i = 0; i < checkedListBox.Items.Count; i++)
-                {
-                    checkedListBox.SetItemChecked(i, value);
-                }
+            this.Icon = Properties.Resources.Frm_Principal;
 
-                return;
-            }
-
-            MessageBox.Show("Nenhum item listado!", "Falha!", MessageBoxButtons.OK);
+            MainCheckedListBox.Instance.SetCheckedListBox(checkedListBox);
+            MainProgressBar.Instance.SetProgressBar(mainProgressBar);
         }
     }
 }

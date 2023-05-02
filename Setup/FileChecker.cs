@@ -1,99 +1,123 @@
-﻿using System;
+﻿using Large_File_Scanner.Components;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Large_File_Scanner.Setup
 {
     public sealed class FileChecker
     {
-        private static FileChecker instance = new FileChecker();
+        private static readonly FileChecker instance = new FileChecker();
+        private readonly Dictionary<string, double> filesLength = new Dictionary<string, double>();
+        private readonly Dictionary<string, int> filesCount = new Dictionary<string, int>();
+        private readonly Dictionary<int, string> allFiles = new Dictionary<int, string>();
+
         private FileChecker()
-        { 
-        }
-        public static FileChecker Instance => instance ?? new FileChecker();
-
-        public Dictionary<string, double> FilesLength { get => filesLength;}
-        public Dictionary<string, int> FilesCount { get => filesCount; }
-        public Dictionary<string, string> AllFiles { get => allFiles; }
-
-
-        private Dictionary<string, double> filesLength = new Dictionary<string, double>();
-        private Dictionary<string, int> filesCount = new Dictionary<string, int>();
-        private Dictionary<string, string> allFiles = new Dictionary<string, string>();
-
-
-
-        public async Task VerificarArquivosAsync(CheckedListBox checkedListBox)
         {
-            await Task.Run(() =>
-            {
-                SetCheckedListBox(checkedListBox);
-            });
         }
 
+        public static FileChecker Instance => instance;
 
-        private void SetCheckedListBox(CheckedListBox checkedListBox)
+        public Dictionary<string, double> FilesLength => filesLength;
+
+        public Dictionary<string, int> FilesCount => filesCount;
+
+        public Dictionary<int, string> AllFiles => allFiles;
+
+        private void ClearCollections()
         {
-            var myPath = InitialSetup.Instance.MyPath;
-            var mb = InitialSetup.Instance.MegaBytes;
-
-            string[] arquivos = Directory.GetFiles(myPath, "*.*", SearchOption.AllDirectories)
-                .Where(arquivo => !arquivo.Contains("\\System Volume Information\\"))
-                .ToArray();
-
-            FilesLength.Clear();
+            filesLength.Clear();
             filesCount.Clear();
             allFiles.Clear();
+        }
 
+        public async Task VerificarArquivosAsync(CheckedListBox checkedListBox, string directoryPath, double minimumSizeInMegaBytes)
+        {
+            ClearCollections();
 
-            foreach (var item in arquivos)
+            try
             {
-                FileInfo fileInfo = new FileInfo(item);
+                var directoryInfo = new DirectoryInfo(directoryPath);
+                var searchOption = SearchOption.AllDirectories;
+                var files = directoryInfo.GetFiles("*.*", searchOption);
 
-                if ((fileInfo.Length / 1024.00 / 1024.00) >= mb)
+                MainProgressBar.Instance.MaxValueProgressBar(files.Count());
+                int count = 0;
+                foreach (var file in files)
                 {
-                    CheckFiles(fileInfo);
+                    try
+                    {
+                        count++;
+                        MainProgressBar.Instance.UpdateProgressBar(count);
+
+                        var sizeInMegaBytes = file.Length / 1024.00 / 1024.00;
+                        if (sizeInMegaBytes < minimumSizeInMegaBytes)
+                            continue;
+
+                        var extension = file.Extension;
+
+                        if (string.IsNullOrEmpty(extension))
+                        {
+                            extension = "Undefined type";
+                        }
+
+                        if (!filesLength.ContainsKey(extension))
+                        {
+                            filesLength.Add(extension, file.Length);
+                            filesCount.Add(extension, 1);
+                        }
+                        else
+                        {
+                            filesLength[extension] += file.Length;
+                            filesCount[extension]++;
+                        }
+
+                        var path = file.DirectoryName;
+                        var value = $"{file.Name} \t size: {sizeInMegaBytes:F2}mb\npath: {path}";
+                        allFiles.Add(allFiles.Count, value);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle exception, log error, etc.
+                    }
+
+
                 }
+
+                AddItemsToCheckedListBox(checkedListBox);
+            }
+            catch (Exception ex)
+            {
+                // Handle exception, log error, etc.
             }
 
-            checkedListBox.Invoke((MethodInvoker)(() =>
-            {
-                checkedListBox.Items.Clear();
-                foreach (string keys in FilesLength.Keys)
-                {
-                    double value = FilesLength[keys] / 1024 / 1024;
-                    double count = filesCount[keys];
+            await Task.CompletedTask;
+        }
 
-                    string i = $"{keys}   [{count}] \t size: {value:F2} mb";
-                    checkedListBox.Items.Add(i, true);
+        private void AddItemsToCheckedListBox(CheckedListBox checkedListBox)
+        {
+            checkedListBox.Invoke((MethodInvoker)(() => {
+                checkedListBox.Items.Clear();
+
+                foreach (var entry in filesLength)
+                {
+                    if (filesCount.TryGetValue(entry.Key, out int count))
+                    {
+                        double size = entry.Value / 1024 / 1024;
+                        string sizeFormat = "mb";
+
+                        if (size > 1024)
+                        {
+                            size /= 1024;
+                            sizeFormat = "gb";
+                        }
+
+                        string item = $"{entry.Key} [{count}] - total: {size:F2} {sizeFormat}";
+                        checkedListBox.Items.Add(item, true);
+                    }
                 }
             }));
         }
-        private void CheckFiles(FileInfo file)
-        {
-            var size = file.Length / 1024.00 / 1024.00;
-            var path = file.Directory;
-            var value = $"\t size: {size:F2}\ndir: {path}";
-            allFiles.Add(file.Name, value);
-
-
-            if (!FilesLength.ContainsKey(file.Extension))
-            {
-                var type = file.Extension;
-                if (String.IsNullOrEmpty(type)) type = "Undefined type";
-
-                FilesLength.Add(type, file.Length);
-                filesCount.Add(type, 1);
-
-                return;
-            }
-
-            FilesLength[file.Extension] += file.Length;
-            filesCount[file.Extension]++;
-        }
-
     }
 }

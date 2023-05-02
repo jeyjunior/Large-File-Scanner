@@ -14,18 +14,16 @@ namespace Large_File_Scanner.Setup
         private FileCreator()
         {
         }
-        public static FileCreator Instance => instance ?? new FileCreator();
+        public static FileCreator Instance => instance ??= new FileCreator();
 
-
-
-        public async Task CriarArquivosAsync(CheckedListBox checkedListBox)
+        public void CriarArquivosAsync(CheckedListBox checkedListBox)
         {
-            await Task.Run(() => {
-                CriarArquivoListandoOsTipos();
-                CriarArquivoGitAttributes(checkedListBox);
-            });
+            CriarArquivoListandoOsTipos();
+            CriarArquivoGitAttributes(checkedListBox);
         }
 
+        //Será criado uma lista de arquivos txt contendo todos os arquivos que foram encontrados
+        //e que possuem o tamanho definido pelo usuario
         private void CriarArquivoListandoOsTipos()
         {
             var allFiles = FileChecker.Instance.AllFiles;
@@ -47,16 +45,25 @@ namespace Large_File_Scanner.Setup
         //Será criado o arquivo gitattributes com os formatos selecionados pelo usuário
         private void CriarArquivoGitAttributes(CheckedListBox checkedListBox)
         {
-            var git = InitialSetup.Instance.Gitattributes;
+            var gitAttributes = InitialSetup.Instance.Gitattributes;
             var gitFormat = InitialSetup.Instance.GitattributesFormat;
 
-            using (var gitFile = new StreamWriter(git))
+            try
             {
-                foreach (string item in checkedListBox.CheckedItems)
+                using (var gitFile = new StreamWriter(gitAttributes))
                 {
-                    var i = item.IndexOf('[') - 1;
-                    gitFile.WriteLine($"*{item.Substring(0, i)} {gitFormat}");
+                    foreach (string item in checkedListBox.CheckedItems)
+                    {
+                        var i = item.IndexOf('[') - 1;
+                        gitFile.WriteLine($"*{item.Substring(0, i)} {gitFormat}");
+                    }
                 }
+
+                MessageBox.Show("Arquivos criado com sucesso!");
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show($"Ocorreu um erro ao criar o arquivo. Certifique-se que o arquivo não esteja em uso!\nDetalhes: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
