@@ -28,14 +28,21 @@ namespace Large_File_Scanner.Setup
 
         public async Task VerificarArquivosAsync(CheckedListBox checkedListBox)
         {
-            await Task.Run(()=> SetCheckedListBox(checkedListBox));
+            await Task.Run(() =>
+            {
+                SetCheckedListBox(checkedListBox);
+            });
         }
+
+
         private void SetCheckedListBox(CheckedListBox checkedListBox)
         {
             var myPath = InitialSetup.Instance.MyPath;
             var mb = InitialSetup.Instance.MegaBytes;
 
-            string[] arquivos = Directory.GetFiles(myPath, "*.*", SearchOption.AllDirectories);
+            string[] arquivos = Directory.GetFiles(myPath, "*.*", SearchOption.AllDirectories)
+                .Where(arquivo => !arquivo.Contains("\\System Volume Information\\"))
+                .ToArray();
 
             FilesLength.Clear();
             filesCount.Clear();

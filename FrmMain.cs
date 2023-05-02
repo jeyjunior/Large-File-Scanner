@@ -21,7 +21,6 @@ namespace Large_File_Scanner
             {
                 var path = fdb.SelectedPath;
                 InitialSetup.Instance.MyPath = path;
-                tbxPastaDestino.Text = path;
             }
         }
 
@@ -38,8 +37,11 @@ namespace Large_File_Scanner
         private async void btn_ListarArquivos_Click(object sender, EventArgs e)
         {
             double valor = 0;
+            var myPath = InitialSetup.Instance.MyPath;
 
-            if (String.IsNullOrEmpty(txbTotalMB.Text))
+            if (String.IsNullOrEmpty(txbTotalMB.Text) || String.IsNullOrEmpty(myPath))
+            {
+                MessageBox.Show("Opera��o inv�lida!");
                 return;
 
 
@@ -48,7 +50,31 @@ namespace Large_File_Scanner
                 InitialSetup.Instance.MegaBytes = valor;
                 await FileChecker.Instance.VerificarArquivosAsync(checkedListBox);
             }
+        }
 
+        private void btn_Check_Click(object sender, EventArgs e)
+        {
+            SetCheckedListBoxValues(true);
+        }
+
+        private void btn_Uncheck_Click(object sender, EventArgs e)
+        {
+            SetCheckedListBoxValues(false);
+        }
+
+        private void SetCheckedListBoxValues(bool value)
+        {
+            if (checkedListBox.Items.Count > 0)
+            {
+                for (int i = 0; i < checkedListBox.Items.Count; i++)
+                {
+                    checkedListBox.SetItemChecked(i, value);
+                }
+
+                return;
+            }
+
+            MessageBox.Show("Nenhum item listado!", "Falha!", MessageBoxButtons.OK);
         }
     }
 }

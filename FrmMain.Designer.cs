@@ -28,90 +28,122 @@
         /// </summary>
         private void InitializeComponent()
         {
-            tbxPastaDestino = new TextBox();
             btnProcurarPasta = new Button();
             lbl_TotalMBs = new Label();
             txbTotalMB = new TextBox();
             btn_GerarArquivo = new Button();
             checkedListBox = new CheckedListBox();
             btn_ListarArquivos = new Button();
+            progressBar1 = new ProgressBar();
+            btn_Check = new Button();
+            btn_Uncheck = new Button();
             SuspendLayout();
-            // 
-            // tbxPastaDestino
-            // 
-            tbxPastaDestino.Location = new Point(22, 27);
-            tbxPastaDestino.Name = "tbxPastaDestino";
-            tbxPastaDestino.Size = new Size(298, 23);
-            tbxPastaDestino.TabIndex = 0;
             // 
             // btnProcurarPasta
             // 
-            btnProcurarPasta.Location = new Point(336, 27);
+            btnProcurarPasta.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnProcurarPasta.Location = new Point(257, 17);
             btnProcurarPasta.Name = "btnProcurarPasta";
-            btnProcurarPasta.Size = new Size(75, 23);
+            btnProcurarPasta.RightToLeft = RightToLeft.No;
+            btnProcurarPasta.Size = new Size(87, 23);
             btnProcurarPasta.TabIndex = 1;
-            btnProcurarPasta.Text = "Pasta";
+            btnProcurarPasta.Text = "Folder";
             btnProcurarPasta.UseVisualStyleBackColor = true;
             btnProcurarPasta.Click += btnProcurarPasta_Click;
             // 
             // lbl_TotalMBs
             // 
-            lbl_TotalMBs.AutoSize = true;
-            lbl_TotalMBs.Location = new Point(197, 73);
+            lbl_TotalMBs.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lbl_TotalMBs.Location = new Point(267, 64);
             lbl_TotalMBs.Name = "lbl_TotalMBs";
-            lbl_TotalMBs.Size = new Size(38, 15);
+            lbl_TotalMBs.Size = new Size(65, 15);
             lbl_TotalMBs.TabIndex = 3;
-            lbl_TotalMBs.Text = "label1";
+            lbl_TotalMBs.Text = "MegaBytes";
+            lbl_TotalMBs.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // txbTotalMB
             // 
-            txbTotalMB.Location = new Point(22, 65);
+            txbTotalMB.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            txbTotalMB.Location = new Point(257, 82);
             txbTotalMB.MaxLength = 12;
             txbTotalMB.Name = "txbTotalMB";
-            txbTotalMB.Size = new Size(160, 23);
+            txbTotalMB.Size = new Size(86, 23);
             txbTotalMB.TabIndex = 4;
             txbTotalMB.KeyPress += txbTotalMB_KeyPress;
             // 
             // btn_GerarArquivo
             // 
-            btn_GerarArquivo.Location = new Point(354, 402);
+            btn_GerarArquivo.Location = new Point(12, 403);
             btn_GerarArquivo.Name = "btn_GerarArquivo";
-            btn_GerarArquivo.Size = new Size(75, 23);
+            btn_GerarArquivo.Size = new Size(239, 23);
             btn_GerarArquivo.TabIndex = 5;
-            btn_GerarArquivo.Text = "Examinar";
+            btn_GerarArquivo.Text = "Create Files";
             btn_GerarArquivo.UseVisualStyleBackColor = true;
             btn_GerarArquivo.Click += btn_GerarArquivo_Click;
             // 
             // checkedListBox
             // 
+            checkedListBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             checkedListBox.FormattingEnabled = true;
-            checkedListBox.Location = new Point(22, 107);
+            checkedListBox.Location = new Point(12, 17);
             checkedListBox.Name = "checkedListBox";
-            checkedListBox.Size = new Size(389, 274);
+            checkedListBox.Size = new Size(239, 364);
             checkedListBox.TabIndex = 6;
             // 
             // btn_ListarArquivos
             // 
-            btn_ListarArquivos.Location = new Point(336, 78);
+            btn_ListarArquivos.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btn_ListarArquivos.Location = new Point(257, 111);
             btn_ListarArquivos.Name = "btn_ListarArquivos";
-            btn_ListarArquivos.Size = new Size(75, 23);
+            btn_ListarArquivos.Size = new Size(86, 23);
             btn_ListarArquivos.TabIndex = 7;
-            btn_ListarArquivos.Text = "Listar";
+            btn_ListarArquivos.Text = "List";
             btn_ListarArquivos.UseVisualStyleBackColor = true;
             btn_ListarArquivos.Click += btn_ListarArquivos_Click;
+            // 
+            // progressBar1
+            // 
+            progressBar1.Location = new Point(12, 387);
+            progressBar1.Name = "progressBar1";
+            progressBar1.Size = new Size(239, 10);
+            progressBar1.TabIndex = 8;
+            // 
+            // btn_Check
+            // 
+            btn_Check.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btn_Check.Location = new Point(259, 189);
+            btn_Check.Name = "btn_Check";
+            btn_Check.Size = new Size(86, 23);
+            btn_Check.TabIndex = 9;
+            btn_Check.Text = "Check";
+            btn_Check.UseVisualStyleBackColor = true;
+            btn_Check.Click += btn_Check_Click;
+            // 
+            // btn_Uncheck
+            // 
+            btn_Uncheck.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btn_Uncheck.Location = new Point(259, 218);
+            btn_Uncheck.Name = "btn_Uncheck";
+            btn_Uncheck.Size = new Size(86, 23);
+            btn_Uncheck.TabIndex = 10;
+            btn_Uncheck.Text = "Uncheck";
+            btn_Uncheck.UseVisualStyleBackColor = true;
+            btn_Uncheck.Click += btn_Uncheck_Click;
             // 
             // FrmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(441, 450);
+            ClientSize = new Size(356, 438);
+            Controls.Add(btn_Uncheck);
+            Controls.Add(btn_Check);
             Controls.Add(btn_ListarArquivos);
+            Controls.Add(progressBar1);
+            Controls.Add(lbl_TotalMBs);
+            Controls.Add(txbTotalMB);
             Controls.Add(checkedListBox);
             Controls.Add(btn_GerarArquivo);
-            Controls.Add(txbTotalMB);
-            Controls.Add(lbl_TotalMBs);
             Controls.Add(btnProcurarPasta);
-            Controls.Add(tbxPastaDestino);
             Name = "FrmMain";
             Text = "Large File Scanner - LFS";
             ResumeLayout(false);
@@ -119,12 +151,14 @@
         }
 
         #endregion
-        private TextBox tbxPastaDestino;
         private Button btnProcurarPasta;
         private Label lbl_TotalMBs;
         private TextBox txbTotalMB;
         private Button btn_GerarArquivo;
         private CheckedListBox checkedListBox;
         private Button btn_ListarArquivos;
+        private ProgressBar progressBar1;
+        private Button btn_Check;
+        private Button btn_Uncheck;
     }
 }
