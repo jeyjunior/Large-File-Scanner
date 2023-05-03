@@ -2,8 +2,6 @@ using Large_File_Scanner.Components;
 using Large_File_Scanner.Helpers;
 using Large_File_Scanner.Setup;
 using System.Diagnostics;
-using System.Globalization;
-using System.Security.Principal;
 
 namespace Large_File_Scanner
 {
@@ -27,6 +25,12 @@ namespace Large_File_Scanner
 
         private void btn_GerarArquivo_Click(object sender, EventArgs e)
         {
+            if (InitialSetup.Instance.MegaBytes <= 0 || !InitialSetup.Instance.IsPathValid)
+            {
+                MessageBox.Show("Operação inválida!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             FileCreator.Instance.CriarArquivosAsync(checkedListBox);
         }
 
@@ -65,6 +69,16 @@ namespace Large_File_Scanner
 
             MainCheckedListBox.Instance.SetCheckedListBox(checkedListBox);
             MainProgressBar.Instance.SetProgressBar(mainProgressBar);
+        }
+
+        private void btn_GitLFS_Click(object sender, EventArgs e)
+        {
+            string url = "https://www.git-lfs.com";
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            });
         }
     }
 }

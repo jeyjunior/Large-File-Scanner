@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
+﻿
 namespace Large_File_Scanner.Setup
 {
     public sealed class FileCreator
@@ -36,7 +30,7 @@ namespace Large_File_Scanner.Setup
 
                 foreach (var item in allFiles)
                 {
-                    file.WriteLine($"{item.Key}{item.Value}\n");
+                    file.WriteLine($"{item.Key} - {item.Value}\n");
                 }
             }
         }
@@ -61,9 +55,9 @@ namespace Large_File_Scanner.Setup
 
                 MessageBox.Show("Arquivos criado com sucesso!");
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
-                MessageBox.Show($"Ocorreu um erro ao criar o arquivo. Certifique-se que o arquivo não esteja em uso!\nDetalhes: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ocorreu um erro ao criar o arquivo. \nCertifique-se de que todas os valores foram definidos corretamente!\nDetalhes: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

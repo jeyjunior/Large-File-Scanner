@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Large_File_Scanner.Setup
+﻿namespace Large_File_Scanner.Setup
 {
     public sealed class InitialSetup
     {
@@ -43,7 +37,7 @@ namespace Large_File_Scanner.Setup
                 {
                     myPath = value;
                     FileName = $"{myPath}\\{fileName}.txt";
-                    Gitattributes = $"{myPath}\\gitattributes.txt";
+                    Gitattributes = $"{myPath}\\.gitattributes.txt";
                     isPathValid = true;
                 }
                 else

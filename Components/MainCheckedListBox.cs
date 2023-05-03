@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Large_File_Scanner.Components
+﻿namespace Large_File_Scanner.Components
 {
     public class MainCheckedListBox
     {

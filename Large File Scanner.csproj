@@ -7,7 +7,23 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>Frm_Principal.ico</ApplicationIcon>
+    <Copyright>JeyJunior</Copyright>
+    <Company>JeyJunior Games</Company>
+    <Authors>JoseJunior</Authors>
+    <PackageIcon>Frm_Principal.ico</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Frm_Principal.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Builds\largefilescanner\Frm_Principal.ico">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
